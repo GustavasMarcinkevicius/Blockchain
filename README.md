@@ -20,3 +20,25 @@ Pagrindinis veikimo principas:
     }
 7. Galiausiai vyksta AND bitų operacija su const stringu (std::string start = "qwertyuiopasdfghjklzxcvbnm945137";)  (jeigu pradinis string per trumpas, jis yra pratęsiamas jį kartojant)
 8. Galutinis dvejetainis kodas yra paverčiamas šešioliktainiu.
+
+
+KAI INPUT'AS YRA VIENAS SIMBOLIS:
+
+<img width="632" height="366" alt="image" src="https://github.com/user-attachments/assets/b39a8c4b-5541-4d28-8d84-f9717cad45bc" />
+
+
+LAIKO TESTAS:
+
+<img width="751" height="452" alt="image" src="https://github.com/user-attachments/assets/c5021403-b696-4794-a161-ca0a6366d6e4" />
+
+
+COLLISION TESTAS:
+
+File: pairs_len10.txt
+Total pairs: 100000
+Collisions: 0
+Collision rate: 0%
+
+
+
+
