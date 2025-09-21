@@ -27,9 +27,9 @@ std::string binaryToHex(const std::string& binary) {
 }
 
 
-std::string hash(std::string input, int seed){
+std::string hash(std::string input){
 
-
+    int seed = (input.length()%10)+9;
     input = wordToBinary(input);
     if (input.length() < 32){
         for(int i = 0; i<10; i++)
@@ -98,10 +98,8 @@ std::string hash(std::string input, int seed){
 
 int main(){
 
-    int seed = 10;
-    std::string input = "labaa";
-    std::cout << hash("", seed) << std::endl;
-    std::cout << hash("b", seed) << std::endl;
+    std::cout << hash("") << std::endl;
+    std::cout << hash("b") << std::endl;
 
     
     return 0;
