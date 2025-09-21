@@ -48,10 +48,14 @@ std::string hash(std::string input){
         else amount_of_0 += i;
     }
 
-    int bigger = ((amount_of_0 > amount_of_1) ? amount_of_0 : amount_of_1)*seed;
+    int bigger = ((amount_of_0 > amount_of_1) ? amount_of_0 : amount_of_1)*2*seed;
     int smaller = ((amount_of_0 < amount_of_1) ? amount_of_0 : amount_of_1);
     if ((bigger % smaller) == 0)
         smaller++;
+
+    while (input.size() < 256){ 
+        input += input;
+    }
 
     int current = 0;
     for (int i=0; i<bigger; i++){
@@ -74,9 +78,7 @@ std::string hash(std::string input){
     current = next_pos; 
     }
 
-    while (input.size() < 256){ 
-        input += input;
-    }
+
 
     // Pavertus i binary, 256 bitai (nezinau ar labai reikalingas)
     std::string start = "qwertyuiopasdfghjklzxcvbnm945137";  
