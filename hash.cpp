@@ -39,6 +39,7 @@ std::string hash(std::string input){
         input += "1011101";
     }
 
+
     int amount_of_1 = 0;
     int amount_of_0 = 0;
     for (int i=0; i<input.length(); i++){
@@ -48,7 +49,7 @@ std::string hash(std::string input){
     }
 
 
- std::cout << "kiekis " << amount_of_1 << " " << amount_of_0 << std::endl;
+//  std::cout << "kiekis " << amount_of_1 << " " << amount_of_0 << std::endl;
 
     if (amount_of_1 < 0)
     amount_of_1 = amount_of_1*(-1);
@@ -62,8 +63,8 @@ std::string hash(std::string input){
         smaller++;
 
 
-    std::cout << input.length() << std::endl;
-    std::cout << bigger << " " << smaller << std::endl;
+    // std::cout << input.length() << std::endl;
+    // std::cout << bigger << " " << smaller << std::endl;
 
     int current = 0;
     for (int i=0; i<bigger; i++){
@@ -88,11 +89,11 @@ std::string hash(std::string input){
     current = next_pos; 
     }
 
-    while (input.size() < 256){ //Gali but sitoj vietoj blogai
+    while (input.size() < 256){ //Gali but sitoj vietoj blogai (reiktu pakeist)
         input += input;
     }
 
-    // Pavertus i binary, 256 bitai
+    // Pavertus i binary, 256 bitai (nezinau ar labai reikalingas)
     std::string start = "qwertyuiopasdfghjklzxcvbnm945137";  
     start = wordToBinary(start);
 
@@ -116,7 +117,8 @@ int main(){
     std::string input = buffer.str();
 
     // std::cout << input.length() << std::endl;
-    // std::cout << hash("input") << std::endl;
+    // std::cout << input.length() << std:: endl;
+    // std::cout << hash(input) << std::endl;
     std::cout << hash("ciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupas") << std::endl;
     std::cout << hash("liaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupas") << std::endl;
     std::cout << hash("labas") << std::endl;
