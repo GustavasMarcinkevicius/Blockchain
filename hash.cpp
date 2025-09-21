@@ -31,6 +31,12 @@ std::string hash(std::string input, int seed){
 
 
     input = wordToBinary(input);
+    if (input.length() < 32){
+        for(int i = 0; i<10; i++)
+        input += input;
+        input += "1011101";
+    }
+
     int amount_of_1 = 0;
     int amount_of_0 = 0;
     for (int i=0; i<input.length(); i++){
@@ -74,9 +80,6 @@ std::string hash(std::string input, int seed){
         input += input;
     }
 
-
-
-
     // Pavertus i binary, 256 bitai
     std::string start = "qwertyuiopasdfghjklzxcvbnm945137";  
     start = wordToBinary(start);
@@ -97,8 +100,8 @@ int main(){
 
     int seed = 10;
     std::string input = "labaa";
-    std::cout << hash("dfasghbjkljuiygtfyghbjuiokpkihyugtrdfyguhijoiadsgyusadaa", seed) << std::endl;
-    std::cout << hash("dfasghbjkljuiygtfaghbjuiokpkihyugtrdfyguhijoiadsgyusadaa", seed) << std::endl;
+    std::cout << hash("", seed) << std::endl;
+    std::cout << hash("b", seed) << std::endl;
 
     
     return 0;
