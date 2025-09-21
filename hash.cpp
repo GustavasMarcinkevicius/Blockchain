@@ -11,6 +11,22 @@ std::string wordToBinary(const std::string& text) {
     return binary;
 }
 
+char fourNumbersToHex(const std::string& nibble) {
+    int value = std::bitset<4>(nibble).to_ulong();
+    if (value < 10) return '0' + value;
+    return 'A' + (value - 10);
+}
+
+std::string binaryToHex(const std::string& binary) {
+    std::string hex;
+    for (size_t i = 0; i < binary.size(); i += 4) {
+        hex += fourNumbersToHex(binary.substr(i, 4));
+    }
+
+    return hex;
+}
+
+
 std::string hash(std::string input, int seed){
 
 
@@ -53,9 +69,9 @@ std::string hash(std::string input, int seed){
 int main(){
 
     int seed = 10;
-    std::string input = "labas";
-    std::cout << hash(input, seed) << std::endl;
-
+    std::string input = "labaa";
+    hash(input, seed);
+    std::cout << binaryToHex("1100011000010110001001100001011000010110");
     
     // std::cout << hash(input) << std::endl;
     return 0;
