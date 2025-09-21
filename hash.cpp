@@ -48,35 +48,20 @@ std::string hash(std::string input){
         else amount_of_0 += i;
     }
 
-
-//  std::cout << "kiekis " << amount_of_1 << " " << amount_of_0 << std::endl;
-
-    if (amount_of_1 < 0)
-    amount_of_1 = amount_of_1*(-1);
-
-    if (amount_of_0 < 0)
-    amount_of_0 = amount_of_0*(-1);
-
     int bigger = ((amount_of_0 > amount_of_1) ? amount_of_0 : amount_of_1)*seed;
     int smaller = ((amount_of_0 < amount_of_1) ? amount_of_0 : amount_of_1);
     if ((bigger % smaller) == 0)
         smaller++;
 
-
-    // std::cout << input.length() << std::endl;
-    // std::cout << bigger << " " << smaller << std::endl;
-
     int current = 0;
     for (int i=0; i<bigger; i++){
         char temp = input[current];
         int next_pos = (current + smaller - i) % input.length();
-        // std::cout << "next_pos: " << next_pos << " current: " << current << " smaller: " << smaller << " i: " << i << std::endl;
         input[current] = input[next_pos];
-        // std::cout << "switching " << current << " with " << next_pos << std::endl; 
-
         input[next_pos] = temp;
         current = next_pos; 
     }
+
     input = binaryToHex(input);
     input = wordToBinary(input);
 
@@ -89,7 +74,7 @@ std::string hash(std::string input){
     current = next_pos; 
     }
 
-    while (input.size() < 256){ //Gali but sitoj vietoj blogai (reiktu pakeist)
+    while (input.size() < 256){ 
         input += input;
     }
 
@@ -116,9 +101,6 @@ int main(){
     buffer << file.rdbuf(); 
     std::string input = buffer.str();
 
-    // std::cout << input.length() << std::endl;
-    // std::cout << input.length() << std:: endl;
-    // std::cout << hash(input) << std::endl;
     std::cout << hash("ciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupas") << std::endl;
     std::cout << hash("liaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupas") << std::endl;
     std::cout << hash("labas") << std::endl;
