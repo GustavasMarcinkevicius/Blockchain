@@ -94,13 +94,23 @@ std::string hash(std::string input){
     return input;
 }
 
-int main(){
+int main(int argc, char* argv[]){
 
-    std::ifstream file("Input.txt");  
+    std::string input;
+    if (argc > 1) {
+        std::string filename = argv[1];
+        std::ifstream file(filename);
+
     std::ostringstream buffer;
     buffer << file.rdbuf(); 
-    std::string input = buffer.str();
+    input = buffer.str();
+    }
+    else{
+       std::cout << "Iveskite slaptazodi: ";  std::cin >> input;
 
+    }
+
+    std::cout << hash(input) << std::endl;
     std::cout << hash("ciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupas") << std::endl;
     std::cout << hash("liaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupas") << std::endl;
     std::cout << hash("labas") << std::endl;
