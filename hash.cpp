@@ -3,6 +3,9 @@
 #include <bitset>
 #include <fstream>
 #include <sstream>
+#include <chrono>   
+
+
 
 
 std::string wordToBinary(const std::string& text) {
@@ -31,13 +34,16 @@ std::string binaryToHex(const std::string& binary) {
 
 std::string hash(std::string input){
 
-    int seed = (input.length()%10)+9;
+    // std::cout << "input = " << input << std::endl;
+
+    int seed = (input.length()%10)+1;
     input = wordToBinary(input);
-    if (input.length() < 32){
-        for(int i = 0; i<10; i++)
+    while (input.length() < 32){
         input += input;
         input += "1011101";
     }
+    
+    // std::cout << "input = " << input << std::endl;
 
 
     int amount_of_1 = 0;
@@ -48,10 +54,35 @@ std::string hash(std::string input){
         else amount_of_0 += i;
     }
 
-    int bigger = ((amount_of_0 > amount_of_1) ? amount_of_0 : amount_of_1)*2*seed;
+    if (amount_of_1 < 0)
+    amount_of_1 *= -1;
+
+    if (amount_of_0 < 0)
+    amount_of_0 *= -1;
+
+
+    // std::cout << "amount of 1, 0 = " << amount_of_1 << "    " << amount_of_0 << std::endl;
+
+
+    int bigger = ((amount_of_0 > amount_of_1) ? amount_of_0 : amount_of_1)*seed;
     int smaller = ((amount_of_0 < amount_of_1) ? amount_of_0 : amount_of_1);
     if ((bigger % smaller) == 0)
         smaller++;
+
+    // std::cout << "bigger, smaller = " << bigger << "    " << smaller << std::endl;
+
+
+    if (bigger > 100000){
+    bigger /= 10;
+    smaller /= 10;
+    }
+
+    if (bigger > 100000){
+        bigger /= (bigger/100000);
+        smaller /= (smaller/100000);
+    }
+    //  std::cout << "bigger, smaller = " << bigger << "    " << smaller << std::endl;
+
 
     while (input.size() < 256){ 
         input += input;
@@ -59,6 +90,7 @@ std::string hash(std::string input){
 
     int current = 0;
     for (int i=0; i<bigger; i++){
+        // std::cout << "b" << std::endl;
         char temp = input[current];
         int next_pos = (current + smaller - i) % input.length();
         input[current] = input[next_pos];
@@ -93,7 +125,42 @@ std::string hash(std::string input){
     }
 
     return binaryToHex(Hashed);
-    return input;
+}
+
+void testFileForCollisions(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file) {
+        std::cerr << "Could not open file: " << filename << "\n";
+        return;
+    }
+
+    std::string line;
+    int total = 0;
+    int collisions = 0;
+
+    while (std::getline(file, line)) {
+        std::istringstream iss(line);
+        std::string a, b;
+        iss >> a >> b;
+
+        std::string ha = hash(a);
+        std::string hb = hash(b);
+
+        if (ha == hb) {
+            collisions++;
+        }
+        total++;
+        std::cout << total << std::endl;
+        // std::cout << ha << std::endl;
+        // std::cout << hb << std::endl;
+    }
+
+    std::cout << "File: " << filename << "\n";
+    std::cout << "Total pairs: " << total << "\n";
+    std::cout << "Collisions: " << collisions << "\n";
+    std::cout << "Collision rate: "
+              << (total > 0 ? (100.0 * collisions / total) : 0)
+              << "%\n";
 }
 
 int main(int argc, char* argv[]){
@@ -104,20 +171,34 @@ int main(int argc, char* argv[]){
         std::ifstream file(filename);
 
     std::ostringstream buffer;
-    buffer << file.rdbuf(); 
+        std::string line;
+        int count = 0;
+        while (count < 128 && std::getline(file, line)) { //Cia galima nustatyt eiluciu skaiciu
+            buffer << line << "\n";
+            count++;
+        }
     input = buffer.str();
     }
     else{
        std::cout << "Iveskite slaptazodi: ";  std::cin >> input;
 
     }
+    // for (int i = 0; i < 100; i++)
+    // std::cout << hash("azzzzzaaaaaads") << std::endl;
+    testFileForCollisions("pairs_len1000.txt");
 
-    std::cout << hash(input) << std::endl;
-    std::cout << hash("ciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupas") << std::endl;
-    std::cout << hash("liaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupasciaupas") << std::endl;
-    std::cout << hash("labas") << std::endl;
-    std::cout << hash("lapas") << std::endl;
+    // -------------LAIKO TESTAS------------------
 
-    
+    // auto start = std::chrono::high_resolution_clock::now();
+
+    // for (int i=0; i<10; i++){
+    // std::cout <<"a" << std::endl;
+    // hash(input);
+    // }
+
+    //  auto end = std::chrono::high_resolution_clock::now();
+    // std::cout << hash(input) << std::endl;
+    // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    // std::cout << "Elapsed time: " << duration.count()/10.0 << " ms" << std::endl;
     return 0;
 }
