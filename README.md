@@ -35,9 +35,37 @@ LAIKO TESTAS:
 COLLISION TESTAS:
 
 File: pairs_len10.txt
+
 Total pairs: 100000
+
 Collisions: 0
+
 Collision rate: 0%
+
+
+
+COLLISION TESTAS:
+
+File: pairs_len10.txt  
+Total pairs: 100000  
+Collisions: 0  
+Collision rate: 0%  
+
+File: pairs_len100.txt  
+Total pairs: 100000  
+Collisions: 0  
+Collision rate: 0%  
+
+File: pairs_len500.txt  
+Total pairs: 100000  
+Collisions: 0  
+Collision rate: 0%  
+
+File: pairs_len500.txt  
+Total pairs: 100000  
+Collisions: 0  
+Collision rate: 0%  
+
 
 
 
