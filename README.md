@@ -29,7 +29,7 @@ KAI INPUT'AS YRA VIENAS SIMBOLIS:
 
 LAIKO TESTAS:
 
-<img width="751" height="452" alt="image" src="https://github.com/user-attachments/assets/c5021403-b696-4794-a161-ca0a6366d6e4" />
+<img width="751" height="452" alt="image" src="https://github.com/user-attachments/assets/e4ae2613-0a5d-46ca-911f-d62ccc7f22fc" />
 
 
 
