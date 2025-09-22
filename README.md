@@ -9,7 +9,7 @@ Pagrindinis veikimo principas:
       3.2 Iš skaičiuos yra suskaičiuojami vienetai ir nuliai įvertinant jų poziciją (Tarkim, vienetai būtų 1x0+1x1+1x6+1x7)
 
 4. Iš šių dviejų skaičių yra surandamas didesnis (int bigger) ir mažesnis (int smaller)
-5. Didesnis skaičius yra padauginamas iš seed, kuris yra apskaičiuojamas: int seed = (input.length()%10)+9;
+5. Didesnis skaičius yra padauginamas iš seed, kuris yra apskaičiuojamas: int seed = (input.length()%10)+1;
 6. Prasideda FOR loop'as: (vyksta bitų permaišymas pagal bigger, smaller ir i vertes)
     for (int i=0; i<smaller; i++){
     char temp = input[current];
@@ -32,15 +32,6 @@ LAIKO TESTAS:
 <img width="751" height="452" alt="image" src="https://github.com/user-attachments/assets/c5021403-b696-4794-a161-ca0a6366d6e4" />
 
 
-COLLISION TESTAS:
-
-File: pairs_len10.txt
-
-Total pairs: 100000
-
-Collisions: 0
-
-Collision rate: 0%
 
 
 
