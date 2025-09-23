@@ -35,7 +35,7 @@ KAI INPUT'AS YRA VIENAS SIMBOLIS (pirmi du vienodi siekiant parodyt, kad vienoda
 
 LAIKO TESTAS:
 
-_BUS PRIDETA_
+<img width="754" height="448" alt="image" src="https://github.com/user-attachments/assets/0aed5f57-413c-49d0-9425-47b1ca35983b" />
 
 COLLISION TESTAS:
 
