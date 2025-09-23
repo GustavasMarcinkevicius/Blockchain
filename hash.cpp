@@ -3,7 +3,8 @@
 #include <bitset>
 #include <fstream>
 #include <sstream>
-#include <chrono>   
+#include <chrono> 
+#include "picosha2.h"
 
 /*
     Improvements made in this hash function:
@@ -308,19 +309,19 @@ int main(int argc, char* argv[]){
     }
 
 
+
     // testFileForAvalanche("pairs.txt");
-    testFileForCollisions("pairs_len10.txt");
+    // testFileForCollisions("pairs_len10.txt");
 
     // -------------LAIKO TESTAS------------------
 
     auto start = std::chrono::high_resolution_clock::now();
     // std::cout << input << std::endl;
     for (int i=0; i<10; i++){
-    hash(input);
+    std::string hash = picosha2::hash256_hex_string(input);
     }
 
     auto end = std::chrono::high_resolution_clock::now();
-    std::cout << hash(input) << std::endl;
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     std::cout << "Elapsed time: " << duration.count()/10.0 << " ms" << std::endl;
     return 0;
