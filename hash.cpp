@@ -234,7 +234,7 @@ int main(int argc, char* argv[]){
     std::ostringstream buffer;
         std::string line;
         int count = 0;
-        while (count < 16 && std::getline(file, line)) { //Cia galima nustatyt eiluciu skaiciu
+        while (count < 512 && std::getline(file, line)) { //Cia galima nustatyt eiluciu skaiciu
             buffer << line << "\n";
             count++;
         }
@@ -260,6 +260,6 @@ int main(int argc, char* argv[]){
     auto end = std::chrono::high_resolution_clock::now();
     std::cout << hash(input) << std::endl;
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    std::cout << "Elapsed time: " << duration.count()/10 << " ms" << std::endl;
+    std::cout << "Elapsed time: " << duration.count()/10.0 << " ms" << std::endl;
     return 0;
 }
