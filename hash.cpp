@@ -69,37 +69,45 @@ std::string hash(std::string input){
     if ((bigger % smaller) == 0)
         smaller++;
 
+    
+    if (bigger < 0)
+    bigger *= -1;
+
+    if (smaller < 0)
+    smaller *= -1;
+
+
 
     if (bigger > 100000){
-    bigger /= 10;
-    smaller /= 10;
+
+        bigger = bigger%1000000 + 1000000;
+        smaller = smaller%1000000 + 100000;
+
     }
 
-
-    else if (bigger > 100000){
-
-        std::cout << (bigger/100000) << std::endl;
-
-        bigger /= (bigger/100000);
-
-        std::cout << bigger << std::endl;
-        smaller /= (smaller/100000);
-    }
-
+    // std::cout << "bigger = " << bigger << " smaller = " << smaller << std::endl;
 
     while (input.size() < 256){ 
         input += input;
     }
 
+    auto start = std::chrono::high_resolution_clock::now();
     int current = 0;
     for (int i=0; i<bigger; i++){
         // std::cout << "b" << std::endl;
         char temp = input[current];
         int next_pos = (current + smaller - i) % input.length();
+        // std::cout << "current = " << current  << " next = " << next_pos << std::endl;
         input[current] = input[next_pos];
         input[next_pos] = temp;
         current = next_pos; 
     }
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    // std::cout << "duration of first loop " << duration.count() << "ms" << std::endl;
+
+
 
     input = binaryToHex(input);
     input = wordToBinary(input);
@@ -119,9 +127,10 @@ std::string hash(std::string input){
     Hashed[i] = input[i];
     }
 
-    // return binaryToHex(Hashed);
-    return Hashed;
+    return binaryToHex(Hashed);
+    // return Hashed;
 }
+
 
 void testFileForCollisions(const std::string& filename) {
     std::ifstream file(filename);
@@ -176,24 +185,24 @@ void testFileForAvalanche(const std::string& filename){
         std::string ha = hash(a);
         std::string hb = hash(b);
 
-        // //Tikrinimas hexu lygmeniu
-        // int counterHEX = 0;
-        // for(int i=0; i<64; i++){
-        //     if (ha[i] != hb[i])
-        //     counterHEX++;
-        // }
+        //Tikrinimas hexu lygmeniu
+        int counterHEX = 0;
+        for(int i=0; i<64; i++){
+            if (ha[i] != hb[i])
+            counterHEX++;
+        }
 
         //TIKRINIMAS binary lygmeniu (reikia originalioj hash funkcijoj nevers i hex returninant)
 
-        int counterBINARY = 0;
-        for(int i=0; i<256; i++){
-            if (ha[i] != hb[i])
-            counterBINARY++;
-        }
+        // int counterBINARY = 0;
+        // for(int i=0; i<256; i++){
+        //     if (ha[i] != hb[i])
+        //     counterBINARY++;
+        // }
 
 
-        // double skirtingumas = counterHEX/64.0*100; // NAUDOTI SITA NORINT MATUOTI HEX
-        double skirtingumas = counterBINARY/256.0*100; //NAUDOTI SITA NORINT MATUOTI BINARY
+        double skirtingumas = counterHEX/64.0*100; // NAUDOTI SITA NORINT MATUOTI HEX
+        // double skirtingumas = counterBINARY/256.0*100; //NAUDOTI SITA NORINT MATUOTI BINARY
 
         if(skirtingumas < MinSkirtingumas)
         MinSkirtingumas = skirtingumas;
@@ -225,7 +234,7 @@ int main(int argc, char* argv[]){
     std::ostringstream buffer;
         std::string line;
         int count = 0;
-        while (count < 128 && std::getline(file, line)) { //Cia galima nustatyt eiluciu skaiciu
+        while (count < 16 && std::getline(file, line)) { //Cia galima nustatyt eiluciu skaiciu
             buffer << line << "\n";
             count++;
         }
@@ -237,23 +246,20 @@ int main(int argc, char* argv[]){
     }
 
 
-    // std::cout << hash("dsjaklsadasas");
-
-
-    testFileForAvalanche("pairs.txt");
-    // testFileForCollisions("pairs_len10.txt");
+    // testFileForAvalanche("pairs.txt");
+    // testFileForCollisions("pairs_len1000.txt");
 
     // -------------LAIKO TESTAS------------------
 
-    // auto start = std::chrono::high_resolution_clock::now();
-    // // std::cout << input << std::endl;
-    // for (int i=0; i<10; i++){
-    // hash(input);
-    // }
+    auto start = std::chrono::high_resolution_clock::now();
+    // std::cout << input << std::endl;
+    for (int i=0; i<10; i++){
+    hash(input);
+    }
 
-    // auto end = std::chrono::high_resolution_clock::now();
-    // std::cout << hash(input) << std::endl;
-    // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    // std::cout << "Elapsed time: " << duration.count()/10.0 << " ms" << std::endl;
+    auto end = std::chrono::high_resolution_clock::now();
+    std::cout << hash(input) << std::endl;
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "Elapsed time: " << duration.count()/10 << " ms" << std::endl;
     return 0;
 }
