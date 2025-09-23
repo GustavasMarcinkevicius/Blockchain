@@ -4,66 +4,60 @@ Pagrindinis veikimo principas:
 2. Papildomos funkcijos - wordToBinary ir binaryToHex - keičia stringo tipą į dvejetainį skaičių/dvejetainį skaičių keičia į šešioliktainį
 3. Kintamieji (amount_of_1, amount_of_0) yra apskaičiuojami taip:
 
-      3.1 Skaitomas pradinis stringas, kuris yra paverstas į dvejetainį skaičių (tarkim, 11000110)
+   3.1 Skaitomas pradinis stringas, kuris yra paverstas į dvejetainį skaičių (tarkim, 11000110)
 
-      3.2 Iš skaičiuos yra suskaičiuojami vienetai ir nuliai įvertinant jų poziciją (Tarkim, vienetai būtų 1x0+1x1+1x6+1x7)
+   3.2 Iš skaičiuos yra suskaičiuojami vienetai ir nuliai įvertinant jų poziciją (Tarkim, vienetai būtų 1x0+1x1+1x6+1x7)
 
 4. Iš šių dviejų skaičių yra surandamas didesnis (int bigger) ir mažesnis (int smaller)
-5. Didesnis skaičius yra padauginamas iš seed, kuris yra apskaičiuojamas: int seed = (input.length()%10)+1;
+5. Didesnis skaičius yra padauginamas iš seed, kuris yra apskaičiuojamas: int seed = (input.length()%10)+9;
 6. Prasideda FOR loop'as: (vyksta bitų permaišymas pagal bigger, smaller ir i vertes)
-    for (int i=0; i<smaller; i++){
-    char temp = input[current];
-    int next_pos = (current + bigger - i) % input.length();
-    input[current] = input[next_pos];
-    input[next_pos] = temp;
-    current = next_pos; 
-    }
+   for (int i=0; i<smaller; i++){
+   char temp = input[current];
+   int next_pos = (current + bigger - i) % input.length();
+   input[current] = input[next_pos];
+   input[next_pos] = temp;
+   current = next_pos;
+   }
 
 7. Įvykdoma:
-    input = binaryToHex(input);
-    input = wordToBinary(input);
+   input = binaryToHex(input);
+   input = wordToBinary(input);
 
-    (Kadangi Hex kodas yra skaitomas kaip paprastas string, bitai persistumdo)
+   (Kadangi Hex kodas yra skaitomas kaip paprastas string, bitai persistumdo)
 
 8. Kartojamas For loop'as
 9. Galutinis dvejetainis kodas yra paverčiamas šešioliktainiu.
-
+   \*Kode taip pat yra papildomų if salygų, kad kodo veikimo laikas neartėtų link begalybės
 
 KAI INPUT'AS YRA VIENAS SIMBOLIS (pirmi du vienodi siekiant parodyt, kad vienodas inputas grąžina vienodą outputą):
 
 <img width="687" height="279" alt="image" src="https://github.com/user-attachments/assets/9dad4907-9554-4cca-b9cc-5d50116304b3" />
 
-
 LAIKO TESTAS:
 
-<img width="751" height="452" alt="image" src="https://github.com/user-attachments/assets/e4ae2613-0a5d-46ca-911f-d62ccc7f22fc" />
-
-
-
-
+_BUS PRIDETA_
 
 COLLISION TESTAS:
 
 File: pairs_len10.txt  
 Total pairs: 100000  
 Collisions: 0  
-Collision rate: 0%  
+Collision rate: 0%
 
 File: pairs_len100.txt  
 Total pairs: 100000  
 Collisions: 0  
-Collision rate: 0%  
+Collision rate: 0%
 
 File: pairs_len500.txt  
 Total pairs: 100000  
 Collisions: 0  
-Collision rate: 0%  
+Collision rate: 0%
 
 File: pairs_len500.txt  
 Total pairs: 100000  
 Collisions: 0  
-Collision rate: 0%  
-
+Collision rate: 0%
 
 LAVINOS EFEKTAS(HEX)  
 max skirtingumas = 100%  
@@ -71,11 +65,6 @@ min skirtingumas = 1.5625%
 vidutinis skirtingumas = 89%
 
 LAVINOS EFEKTAS(BINARY)  
-max skirtingumas = 62.1094%    
+max skirtingumas = 62.1094%  
 min skirtingumas = 0.390625%  
 vidutinis skirtingumas = 45%
-
-
-
-
-

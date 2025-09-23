@@ -7,7 +7,6 @@
 
 
 
-
 std::string wordToBinary(const std::string& text) {
     std::string binary;
     for (unsigned char c : text) {
@@ -34,8 +33,6 @@ std::string binaryToHex(const std::string& binary) {
 
 std::string hash(std::string input){
 
-    // std::cout << "input = " << input << std::endl;
-
     int seed = (input.length()%10)+9;
     input = wordToBinary(input);
     while (input.length() < 32){
@@ -43,8 +40,6 @@ std::string hash(std::string input){
         input += "1011101";
     }
     
-    // std::cout << "input = " << input << std::endl;
-
 
     int amount_of_1 = 0;
     int amount_of_0 = 0;
