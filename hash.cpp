@@ -36,7 +36,7 @@ std::string hash(std::string input){
 
     // std::cout << "input = " << input << std::endl;
 
-    int seed = (input.length()%10)+1;
+    int seed = (input.length()%10)+9;
     input = wordToBinary(input);
     while (input.length() < 32){
         input += input;
@@ -69,19 +69,22 @@ std::string hash(std::string input){
     if ((bigger % smaller) == 0)
         smaller++;
 
-    // std::cout << "bigger, smaller = " << bigger << "    " << smaller << std::endl;
-
 
     if (bigger > 100000){
     bigger /= 10;
     smaller /= 10;
     }
 
-    if (bigger > 100000){
+
+    else if (bigger > 100000){
+
+        std::cout << (bigger/100000) << std::endl;
+
         bigger /= (bigger/100000);
+
+        std::cout << bigger << std::endl;
         smaller /= (smaller/100000);
     }
-    //  std::cout << "bigger, smaller = " << bigger << "    " << smaller << std::endl;
 
 
     while (input.size() < 256){ 
@@ -102,29 +105,22 @@ std::string hash(std::string input){
     input = wordToBinary(input);
 
     current = 0;
-    for (int i=0; i<smaller; i++){
+    for (int i=0; i<bigger; i++){
     char temp = input[current];
-    int next_pos = (current + bigger - i) % input.length();
+    int next_pos = (current + smaller - i) % input.length();
     input[current] = input[next_pos];
     input[next_pos] = temp;
     current = next_pos; 
     }
 
 
-
-    // Pavertus i binary, 256 bitai (nezinau ar labai reikalingas)
-    std::string start = "qwertyuiopasdfghjklzxcvbnm945137";  
-    start = wordToBinary(start);
-
-    std::string Hashed = "";
-
-    for (int i=0; i<256; i++){
-        if (start[i] == input[i])
-        Hashed += '1';
-        else Hashed += '0';
+    std::string Hashed(256, '\0');
+    for(int i=0; i<256; i++){
+    Hashed[i] = input[i];
     }
 
-    return binaryToHex(Hashed);
+    // return binaryToHex(Hashed);
+    return Hashed;
 }
 
 void testFileForCollisions(const std::string& filename) {
@@ -163,6 +159,62 @@ void testFileForCollisions(const std::string& filename) {
               << "%\n";
 }
 
+
+void testFileForAvalanche(const std::string& filename){
+    std::ifstream file(filename);
+    std::string line;
+    double Skirtingumai[100000];
+
+    double MinSkirtingumas = 100;
+    double MaxSkirtingumas = 0;
+    int counter = 0;
+    while (std::getline(file, line)) {
+        std::istringstream iss(line);
+        std::string a, b;
+        iss >> a >> b;
+
+        std::string ha = hash(a);
+        std::string hb = hash(b);
+
+        // //Tikrinimas hexu lygmeniu
+        // int counterHEX = 0;
+        // for(int i=0; i<64; i++){
+        //     if (ha[i] != hb[i])
+        //     counterHEX++;
+        // }
+
+        //TIKRINIMAS binary lygmeniu (reikia originalioj hash funkcijoj nevers i hex returninant)
+
+        int counterBINARY = 0;
+        for(int i=0; i<256; i++){
+            if (ha[i] != hb[i])
+            counterBINARY++;
+        }
+
+
+        // double skirtingumas = counterHEX/64.0*100; // NAUDOTI SITA NORINT MATUOTI HEX
+        double skirtingumas = counterBINARY/256.0*100; //NAUDOTI SITA NORINT MATUOTI BINARY
+
+        if(skirtingumas < MinSkirtingumas)
+        MinSkirtingumas = skirtingumas;
+
+        else if(skirtingumas > MaxSkirtingumas)
+        MaxSkirtingumas = skirtingumas;
+        Skirtingumai[counter] = skirtingumas;
+        counter++;
+        std::cout << counter << std::endl;
+    }
+
+    std::cout << "max skirtingumas = " << MaxSkirtingumas << "%" << std::endl;
+    std::cout << "min skirtingumas = " << MinSkirtingumas << "%" << std::endl;
+    
+    int sum = 0;
+    for(int i=0; i<100000; i++){
+        sum += Skirtingumai[i];
+    }
+    std::cout << "vidutinis skirtingumas = " << sum/100000 << "%" << std::endl;
+}
+
 int main(int argc, char* argv[]){
 
     std::string input;
@@ -183,20 +235,23 @@ int main(int argc, char* argv[]){
        std::cout << "Iveskite slaptazodi: ";  std::cin >> input;
 
     }
-    // for (int i = 0; i < 100; i++)
-    // std::cout << hash("azzzzzaaaaaads") << std::endl;
-    testFileForCollisions("pairs_len1000.txt");
+
+
+    // std::cout << hash("dsjaklsadasas");
+
+
+    testFileForAvalanche("pairs.txt");
+    // testFileForCollisions("pairs_len10.txt");
 
     // -------------LAIKO TESTAS------------------
 
     // auto start = std::chrono::high_resolution_clock::now();
-
+    // // std::cout << input << std::endl;
     // for (int i=0; i<10; i++){
-    // std::cout <<"a" << std::endl;
     // hash(input);
     // }
 
-    //  auto end = std::chrono::high_resolution_clock::now();
+    // auto end = std::chrono::high_resolution_clock::now();
     // std::cout << hash(input) << std::endl;
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
     // std::cout << "Elapsed time: " << duration.count()/10.0 << " ms" << std::endl;
