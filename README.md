@@ -18,13 +18,20 @@ Pagrindinis veikimo principas:
     input[next_pos] = temp;
     current = next_pos; 
     }
-7. Galiausiai vyksta AND bitų operacija su const stringu (std::string start = "qwertyuiopasdfghjklzxcvbnm945137";)  (jeigu pradinis string per trumpas, jis yra pratęsiamas jį kartojant)
-8. Galutinis dvejetainis kodas yra paverčiamas šešioliktainiu.
+
+7. Įvykdoma:
+    input = binaryToHex(input);
+    input = wordToBinary(input);
+
+    (Kadangi Hex kodas yra skaitomas kaip paprastas string, bitai persistumdo)
+
+8. Kartojamas For loop'as
+9. Galutinis dvejetainis kodas yra paverčiamas šešioliktainiu.
 
 
-KAI INPUT'AS YRA VIENAS SIMBOLIS:
+KAI INPUT'AS YRA VIENAS SIMBOLIS (pirmi du vienodi siekiant parodyt, kad vienodas inputas grąžina vienodą outputą):
 
-<img width="632" height="366" alt="image" src="https://github.com/user-attachments/assets/b39a8c4b-5541-4d28-8d84-f9717cad45bc" />
+<img width="687" height="279" alt="image" src="https://github.com/user-attachments/assets/9dad4907-9554-4cca-b9cc-5d50116304b3" />
 
 
 LAIKO TESTAS:
@@ -56,6 +63,17 @@ File: pairs_len500.txt
 Total pairs: 100000  
 Collisions: 0  
 Collision rate: 0%  
+
+
+LAVINOS EFEKTAS(HEX)  
+max skirtingumas = 100%  
+min skirtingumas = 1.5625%  
+vidutinis skirtingumas = 89%
+
+LAVINOS EFEKTAS(BINARY)  
+max skirtingumas = 62.1094%    
+min skirtingumas = 0.390625%  
+vidutinis skirtingumas = 45%
 
 
 
