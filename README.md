@@ -10,14 +10,14 @@
 
 4. Iš šių dviejų skaičių yra surandamas didesnis (int bigger) ir mažesnis (int smaller)
 5. Didesnis skaičius yra padauginamas iš seed, kuris yra apskaičiuojamas: int seed = (input.length()%10)+9;
-6. Prasideda FOR loop'as: (vyksta bitų permaišymas pagal bigger, smaller ir i vertes)
-   for (int i=0; i<smaller; i++){
-   char temp = input[current];
-   int next_pos = (current + bigger - i) % input.length();
-   input[current] = input[next_pos];
-   input[next_pos] = temp;
-   current = next_pos;
-   }
+6. Prasideda FOR loop'as: (vyksta bitų permaišymas pagal bigger, smaller ir i vertes)  
+   for (int i=0; i<smaller; i++){  
+   char temp = input[current];  
+   int next_pos = (current + bigger - i) % input.length();  
+   input[current] = input[next_pos];  
+   input[next_pos] = temp;  
+   current = next_pos;   
+   }  
 
 7. Įvykdoma:
    input = binaryToHex(input);
@@ -26,7 +26,7 @@
    (Kadangi Hex kodas yra skaitomas kaip paprastas string, bitai persistumdo)
 
 8. Kartojamas For loop'as
-9. Galutinis dvejetainis kodas yra paverčiamas šešioliktainiu.
+9. Galutinis dvejetainis kodas yra paverčiamas šešioliktainiu.(esant reikalui, galima neverst)  
    \*Kode taip pat yra papildomų if salygų, kad kodo veikimo laikas neartėtų link begalybės
 
 # KAI INPUT'AS YRA VIENAS SIMBOLIS (pirmi du vienodi siekiant parodyt, kad vienodas inputas grąžina vienodą outputą):
