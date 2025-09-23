@@ -211,8 +211,8 @@ void testFileForCollisions(const std::string& filename) {
         std::string a, b;
         iss >> a >> b;
 
-        std::string ha = hash(a);
-        std::string hb = hash(b);
+        std::string ha = picosha2::hash256_hex_string(a);
+        std::string hb = picosha2::hash256_hex_string(b);
 
         if (ha == hb) {
             collisions++;
@@ -245,27 +245,27 @@ void testFileForAvalanche(const std::string& filename){
         std::string a, b;
         iss >> a >> b;
 
-        std::string ha = hash(a);
-        std::string hb = hash(b);
+        std::string ha = picosha2::hash256_hex_string(a);
+        std::string hb = picosha2::hash256_hex_string(b);
 
-        //Tikrinimas hexu lygmeniu
-        // int counterHEX = 0;
-        // for(int i=0; i<64; i++){
-        //     if (ha[i] != hb[i])
-        //     counterHEX++;
-        // }
+        // Tikrinimas hexu lygmeniu
+        int counterHEX = 0;
+        for(int i=0; i<64; i++){
+            if (ha[i] != hb[i])
+            counterHEX++;
+        }
 
         //TIKRINIMAS binary lygmeniu (reikia originalioj hash funkcijoj nevers i hex returninant)
 
-        int counterBINARY = 0;
-        for(int i=0; i<256; i++){
-            if (ha[i] != hb[i])
-            counterBINARY++;
-        }
+        // int counterBINARY = 0;
+        // for(int i=0; i<256; i++){
+        //     if (ha[i] != hb[i])
+        //     counterBINARY++;
+        // }
 
 
-        // double skirtingumas = counterHEX/64.0*100; // NAUDOTI SITA NORINT MATUOTI HEX
-        double skirtingumas = counterBINARY/256.0*100; //NAUDOTI SITA NORINT MATUOTI BINARY
+        double skirtingumas = counterHEX/64.0*100; // NAUDOTI SITA NORINT MATUOTI HEX
+        // double skirtingumas = counterBINARY/256.0*100; //NAUDOTI SITA NORINT MATUOTI BINARY
 
         if(skirtingumas < MinSkirtingumas)
         MinSkirtingumas = skirtingumas;
@@ -311,18 +311,18 @@ int main(int argc, char* argv[]){
 
 
     // testFileForAvalanche("pairs.txt");
-    // testFileForCollisions("pairs_len10.txt");
+    testFileForCollisions("pairs_len10.txt");
 
     // -------------LAIKO TESTAS------------------
 
-    auto start = std::chrono::high_resolution_clock::now();
-    // std::cout << input << std::endl;
-    for (int i=0; i<10; i++){
-    std::string hash = picosha2::hash256_hex_string(input);
-    }
+    // auto start = std::chrono::high_resolution_clock::now();
+    // // std::cout << input << std::endl;
+    // for (int i=0; i<10; i++){
+    // std::string hash = picosha2::hash256_hex_string(input);
+    // }
 
-    auto end = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-    std::cout << "Elapsed time: " << duration.count()/10.0 << " ms" << std::endl;
-    return 0;
+    // auto end = std::chrono::high_resolution_clock::now();
+    // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    // std::cout << "Elapsed time: " << duration.count()/10.0 << " ms" << std::endl;
+    // return 0;
 }
