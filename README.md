@@ -59,12 +59,28 @@ Total pairs: 100000
 Collisions: 0  
 Collision rate: 0%
 
+COLLISION TESTAS (AI)
+File: pairs_len10.txt
+Total pairs: 100000
+Collisions: 0
+Collision rate: 0%
+
 LAVINOS EFEKTAS(HEX)  
 max skirtingumas = 100%  
 min skirtingumas = 1.5625%  
 vidutinis skirtingumas = 89%
 
+LAVINOS EFEKTAS(HEX)(AI)  
+max skirtingumas = 100%  
+min skirtingumas = 1.5625%  
+vidutinis skirtingumas = 76%
+
 LAVINOS EFEKTAS(BINARY)  
 max skirtingumas = 62.1094%  
 min skirtingumas = 0.390625%  
 vidutinis skirtingumas = 45%
+
+LAVINOS EFEKTAS(BINARY)(AI)
+max skirtingumas = 58.9844%
+min skirtingumas = 0.390625%
+vidutinis skirtingumas = 35%

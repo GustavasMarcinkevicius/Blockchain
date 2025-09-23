@@ -5,6 +5,18 @@
 #include <sstream>
 #include <chrono>   
 
+/*
+    Improvements made in this hash function:
+
+    1. Fixed length early — prevents exponential string growth.
+    2. Long long for indices — avoids integer overflow in swaps.
+    3. Swap rounds kept — preserves the original diffusion idea.
+    4. Limits bigger and smaller — avoids extremely long loops.
+    5. Cleaner, more readable — easier to follow and maintain.
+
+    --ALL IMPROVEMENTS/TEXT GENERATED USING AI--
+*/
+
 
 
 std::string wordToBinary(const std::string& text) {
@@ -31,7 +43,7 @@ std::string binaryToHex(const std::string& binary) {
 }
 
 
-std::string hash(std::string input){
+std::string OGhash(std::string input){
 
     int seed = (input.length()%10)+9;
     input = wordToBinary(input);
@@ -126,6 +138,61 @@ std::string hash(std::string input){
     // return Hashed;
 }
 
+std::string hash(std::string input) {
+    int seed = (input.length() % 10) + 9;
+
+    input = wordToBinary(input);
+
+    // Make input at least 256 bits
+    while (input.length() < 256) {
+        input += input + "1011101";
+    }
+    input.resize(256);
+
+    // Compute sums of indices
+    long long sum1 = 0, sum0 = 0;
+    for (size_t i = 0; i < input.length(); i++) {
+        if (input[i] == '1') sum1 += i;
+        else sum0 += i;
+    }
+
+    // Derive bigger and smaller
+    long long bigger = std::max(sum0, sum1) * seed;
+    long long smaller = std::min(sum0, sum1);
+    if (smaller == 0) smaller = 1;
+
+    bigger = std::abs(bigger);
+    smaller = std::abs(smaller);
+
+    // Limit values for performance
+    bigger = bigger % 1000000 + 100000;
+    smaller = smaller % 100000 + 10000;
+
+    // First round of swaps
+    long long current = 0;
+    for (long long i = 0; i < bigger; i++) {
+        long long next = (current + smaller - i) % input.length();
+        std::swap(input[current], input[next]);
+        current = next;
+    }
+
+    // Convert to hex and back to binary for extra diffusion
+    input = binaryToHex(input);
+    input = wordToBinary(input);
+
+    // Second round of swaps
+    current = 0;
+    for (long long i = 0; i < bigger; i++) {
+        long long next = (current + smaller - i) % input.length();
+        std::swap(input[current], input[next]);
+        current = next;
+    }
+
+    // Produce final fixed-length output
+    std::string hashed = input.substr(0, 256);
+    // return hashed;
+    return binaryToHex(hashed);
+}
 
 void testFileForCollisions(const std::string& filename) {
     std::ifstream file(filename);
@@ -181,23 +248,23 @@ void testFileForAvalanche(const std::string& filename){
         std::string hb = hash(b);
 
         //Tikrinimas hexu lygmeniu
-        int counterHEX = 0;
-        for(int i=0; i<64; i++){
-            if (ha[i] != hb[i])
-            counterHEX++;
-        }
+        // int counterHEX = 0;
+        // for(int i=0; i<64; i++){
+        //     if (ha[i] != hb[i])
+        //     counterHEX++;
+        // }
 
         //TIKRINIMAS binary lygmeniu (reikia originalioj hash funkcijoj nevers i hex returninant)
 
-        // int counterBINARY = 0;
-        // for(int i=0; i<256; i++){
-        //     if (ha[i] != hb[i])
-        //     counterBINARY++;
-        // }
+        int counterBINARY = 0;
+        for(int i=0; i<256; i++){
+            if (ha[i] != hb[i])
+            counterBINARY++;
+        }
 
 
-        double skirtingumas = counterHEX/64.0*100; // NAUDOTI SITA NORINT MATUOTI HEX
-        // double skirtingumas = counterBINARY/256.0*100; //NAUDOTI SITA NORINT MATUOTI BINARY
+        // double skirtingumas = counterHEX/64.0*100; // NAUDOTI SITA NORINT MATUOTI HEX
+        double skirtingumas = counterBINARY/256.0*100; //NAUDOTI SITA NORINT MATUOTI BINARY
 
         if(skirtingumas < MinSkirtingumas)
         MinSkirtingumas = skirtingumas;
@@ -242,7 +309,7 @@ int main(int argc, char* argv[]){
 
 
     // testFileForAvalanche("pairs.txt");
-    // testFileForCollisions("pairs_len1000.txt");
+    testFileForCollisions("pairs_len10.txt");
 
     // -------------LAIKO TESTAS------------------
 
